@@ -122,14 +122,14 @@ public class Main {
       PlayerEntity player = event.player;
       if (entityArmStates.getOrDefault(player.getUUID(), false)) {
         //        player.setOnGround(false); // setOnGround(false)
-        player.abilities.flying = true;
+        //player.abilities.flying = true;
         //        player.setNoGravity(true);
         //        player.isAirBorne = true;
-        player.onUpdateAbilities();
+        //player.onUpdateAbilities();
         
         // Trigger Size event by chaing pose:
-        player.setPose(Pose.CROUCHING);
-        player.setPose(Pose.STANDING);
+        //player.setPose(Pose.CROUCHING);
+        //player.setPose(Pose.STANDING);
         
         //        try {
         //          Main.setPose.invoke(event.player, Pose.SLEEPING);
@@ -139,8 +139,8 @@ public class Main {
         //        }
       } else {
         if (!(player.isCreative() || player.isSpectator())) {
-          player.abilities.flying = false;
-          player.onUpdateAbilities();
+          //player.abilities.flying = false;
+          //player.onUpdateAbilities();
         }
       }
       

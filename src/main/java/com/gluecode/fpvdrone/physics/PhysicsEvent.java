@@ -2,6 +2,7 @@ package com.gluecode.fpvdrone.physics;
 
 import com.gluecode.fpvdrone.Main;
 import com.gluecode.fpvdrone.entity.DroneBuild;
+import com.gluecode.fpvdrone.entity.DroneEntity;
 import com.gluecode.fpvdrone.input.ControllerReader;
 import com.gluecode.fpvdrone.network.DroneState;
 import com.gluecode.fpvdrone.network.Network;
@@ -104,7 +105,7 @@ public class PhysicsEvent {
       if (event.phase == TickEvent.Phase.END) {
         // Update player's drone state for third person mode.
         Minecraft minecraft = Minecraft.getInstance();
-        PlayerEntity player = minecraft.player;
+        DroneEntity player = Main.drone;
         if (player != null) {
           Quaternion rot = (new Quaternion());
           rot.lookAt(PhysicsState.getCore().getDroneLook(), PhysicsState.getCore().getDroneUp());
