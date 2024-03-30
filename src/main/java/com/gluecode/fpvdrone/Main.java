@@ -1,6 +1,7 @@
 package com.gluecode.fpvdrone;
 
 import com.gluecode.fpvdrone.entity.DroneBuild;
+import com.gluecode.fpvdrone.entity.DroneEntity;
 import com.gluecode.fpvdrone.entity.DroneRenderer;
 import com.gluecode.fpvdrone.input.ControllerReader;
 import com.gluecode.fpvdrone.input.KeyManager;
@@ -64,6 +65,8 @@ public class Main {
   public static Map<UUID, DroneBuild> droneBuilds = Maps.newConcurrentMap();
   public static Map<UUID, String> cachedPlayerNames = Maps.newConcurrentMap();
   public static Map<UUID, DroneRenderer> droneRenderers = Maps.newConcurrentMap();
+
+  public static DroneEntity drone;
   
   public Main() {
     DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
@@ -188,7 +191,7 @@ public class Main {
     }
   }
   
-  @OnlyIn(Dist.CLIENT)
+  /*@OnlyIn(Dist.CLIENT)
   @SubscribeEvent
   public static void onRender(RenderPlayerEvent.Pre event) {
     // Render the drone model, excluding the proDroneBuild.
@@ -223,9 +226,9 @@ public class Main {
         event.getLight()
       );
     }
-  }
+  }*/
   
-  @OnlyIn(Dist.CLIENT)
+  /*@OnlyIn(Dist.CLIENT)
   @SubscribeEvent
   public static void onRenderDrone(RenderWorldLastEvent event) {
     // Render the drone props only for all players.
@@ -259,7 +262,7 @@ public class Main {
         event.getMatrixStack()
       );
     }
-  }
+  }*/
   
   @OnlyIn(Dist.CLIENT)
   @SubscribeEvent

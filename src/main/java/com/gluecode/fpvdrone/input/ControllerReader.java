@@ -3,9 +3,11 @@ package com.gluecode.fpvdrone.input;
 import com.gluecode.fpvdrone.Main;
 import com.gluecode.fpvdrone.audio.DroneSound;
 import com.gluecode.fpvdrone.entity.DroneBuild;
+import com.gluecode.fpvdrone.entity.DroneEntity;
 import com.gluecode.fpvdrone.network.Network;
 import com.gluecode.fpvdrone.physics.IPhysicsCore;
 import com.gluecode.fpvdrone.physics.PhysicsState;
+import com.gluecode.fpvdrone.render.CameraManager;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
@@ -13,6 +15,7 @@ import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
@@ -575,6 +578,12 @@ public class ControllerReader {
         nextArm);
       
       if (nextArm) {
+        Main.drone = new DroneEntity(EntityType.ARROW, player.level);
+
+        Main.drone.setPos(player.position().x, player.position().y, player.position().z);
+
+        Minecraft.getInstance().setCameraEntity(Main.drone);
+
         Quaternion rot = (new Quaternion()).fromAngles(
           (player.xRot +
            DroneBuild.cameraAngle) *
@@ -610,9 +619,11 @@ public class ControllerReader {
           () -> () -> Network.updateArmState(player)
         );
         player.setPose(Pose.STANDING);
+
+        Minecraft.getInstance().setCameraEntity(player);
         
-        Vector3f motion = PhysicsState.getCore().getVelocity().mult(0.05f); // 1 tick
-        player.setDeltaMovement(new Vector3d(motion.x, motion.y, motion.z));
+        //Vector3f motion = PhysicsState.getCore().getVelocity().mult(0.05f); // 1 tick
+        //player.setDeltaMovement(new Vector3d(motion.x, motion.y, motion.z));
         
         minecraft.options.fov = disarmFov;
         

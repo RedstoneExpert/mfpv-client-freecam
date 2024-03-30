@@ -2,11 +2,14 @@ package com.gluecode.fpvdrone.physics;
 
 import com.gluecode.fpvdrone.Main;
 import com.gluecode.fpvdrone.entity.DroneBuild;
+import com.gluecode.fpvdrone.entity.DroneEntity;
 import com.gluecode.fpvdrone.input.ControllerReader;
 import com.gluecode.fpvdrone.util.SettingsLoader;
 import com.jme3.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -38,7 +41,7 @@ public class PhysicsState {
     }
     
     Minecraft minecraft = Minecraft.getInstance();
-    ClientPlayerEntity entity = minecraft.player;
+    DroneEntity entity = Main.drone;
   
     if (entity == null) {
       return nextVelocity;
