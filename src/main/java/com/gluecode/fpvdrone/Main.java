@@ -66,7 +66,7 @@ public class Main {
   public static Map<UUID, String> cachedPlayerNames = Maps.newConcurrentMap();
   public static Map<UUID, DroneRenderer> droneRenderers = Maps.newConcurrentMap();
 
-  public static DroneEntity drone;
+  public static DroneEntity drone = null;
   
   public Main() {
     DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {

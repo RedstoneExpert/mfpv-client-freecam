@@ -70,6 +70,7 @@ public class ControllerReader {
   protected static boolean armWaitOneTick = false;
   protected static boolean customAngle = false;
   protected static boolean rightClick = false;
+  protected static boolean reset = false;
   
   // Save non-armed FOV when arming so that it can be restored when disarming.
   private static float disarmFov = 70;
@@ -478,20 +479,29 @@ public class ControllerReader {
           
           boolean prevArm = rawArm;
           boolean prevRightClick = rightClick;
+          boolean prevReset = reset;
           rawArm = getButtonValue(ControllerConfig.getArmChannel(), ControllerConfig.getInvertArm());
           customAngle = getButtonValue(
             ControllerConfig.getActivateAngleChannel(),
             ControllerConfig.getInvertActivateAngle()
           );
           rightClick = getButtonValue(
-            ControllerConfig.getRightClickChannel(),
-            ControllerConfig.getInvertRightClick()
+                  ControllerConfig.getRightClickChannel(),
+                  ControllerConfig.getInvertRightClick()
           );
+
+          reset = getButtonValue(-1, false);
+
+
           if (prevArm != rawArm) {
             handleArmToggle();
           }
           if (prevRightClick != rightClick) {
             handleRightClickToggle();
+          }
+
+          if (prevReset != reset) {
+            resetToggle();
           }
           
           //      String a = "";
@@ -578,9 +588,10 @@ public class ControllerReader {
         nextArm);
       
       if (nextArm) {
-        Main.drone = new DroneEntity(EntityType.ARROW, player.level);
-
-        Main.drone.setPos(player.position().x, player.position().y, player.position().z);
+        if (Main.drone == null) {
+          Main.drone = new DroneEntity(EntityType.ARROW, player.level);
+          Main.drone.setPos(player.position().x, player.position().y, player.position().z);
+        }
 
         Minecraft.getInstance().setCameraEntity(Main.drone);
 
@@ -692,5 +703,26 @@ public class ControllerReader {
   
   public static boolean getRightClick() {
     return rightClick;
+  }
+
+  public static void resetToggle() {
+    if (arm && reset) {
+      Minecraft minecraft = Minecraft.getInstance();
+
+      ClientPlayerEntity player = minecraft.player;
+      assert player != null;
+      Main.drone.setPos(player.position().x, player.position().y, player.position().z);
+      Quaternion rot = (new Quaternion()).fromAngles(
+              (player.xRot +
+                      DroneBuild.cameraAngle) *
+                      rads,
+              -player.yRot * rads,
+              0
+      );
+      IPhysicsCore core = PhysicsState.getCore();
+      core.setDroneLook(rot.mult(Vector3f.UNIT_Z));
+      core.setDroneUp(rot.mult(Vector3f.UNIT_Y));
+      core.setDroneLeft(core.getDroneUp().cross(core.getDroneLook()));;
+    }
   }
 }
